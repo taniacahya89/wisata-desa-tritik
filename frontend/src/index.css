@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/* ========================================
+   Design System — Desa Wisata Tritik
+   ======================================== */
+
+@theme {
+  --color-olive: #6D5C0D;
+  --color-olive-light: #8A7724;
+  --color-olive-dark: #4A3E09;
+  --color-cream: #F6F1E8;
+  --color-cream-dark: #E8DFD0;
+  --color-dark: #1A1A1A;
+  --color-gray: #6B7280;
+  --color-gray-light: #F0F0F0;
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   Leaflet Map Overrides
+   ======================================== */
+
+.leaflet-container {
+  border-radius: 1rem;
+  z-index: 0;
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-olive-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-olive);
+}
+
+/* ========================================
+   Selection
+   ======================================== */
+
+::selection {
+  background-color: var(--color-olive);
+  color: white;
+}
