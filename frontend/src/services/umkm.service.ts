@@ -1,6 +1,6 @@
-import { api } from "./api";
 import type { Umkm } from "../types";
+import { DUMMY_UMKM } from "../data/dummy";
 
 export async function getUmkmData(): Promise<Umkm[]> {
-  return api.get<Umkm[]>("/api/umkm");
+  return DUMMY_UMKM;
 }

@@ -1,9 +1,8 @@
-import { api } from "./api";
 import type { GalleryItem } from "../types";
-import { GALLERY_CATEGORIES } from "../data/dummy";
+import { DUMMY_GALLERY, GALLERY_CATEGORIES } from "../data/dummy";
 
 export async function getGalleryData(): Promise<GalleryItem[]> {
-  return api.get<GalleryItem[]>("/api/gallery");
+  return DUMMY_GALLERY;
 }
 
 export function getGalleryCategories(): string[] {

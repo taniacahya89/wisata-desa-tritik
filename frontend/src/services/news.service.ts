@@ -1,6 +1,6 @@
-import { api } from "./api";
 import type { News } from "../types";
+import { DUMMY_NEWS } from "../data/dummy";
 
 export async function getNewsData(): Promise<News[]> {
-  return api.get<News[]>("/api/news");
+  return DUMMY_NEWS;
 }

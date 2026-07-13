@@ -1,6 +1,9 @@
-import { api } from "./api";
 import type { ManagerDataResponse } from "../types";
+import { DUMMY_MANAGERS, DUMMY_PARTNERS } from "../data/dummy";
 
 export async function getManagerData(): Promise<ManagerDataResponse> {
-  return api.get<ManagerDataResponse>("/api/manager");
+  return {
+    managers: DUMMY_MANAGERS,
+    partners: DUMMY_PARTNERS,
+  };
 }
