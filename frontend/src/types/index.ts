@@ -13,9 +13,12 @@ export interface News {
   id: string;
   title: string;
   excerpt: string;
-  date: string;
+  date?: string;
   category: string;
   thumbnail: string;
+  source?: string;
+  url?: string;
+  period?: string;
 }
 
 export interface GalleryItem {
@@ -45,6 +48,12 @@ export interface Manager {
   name: string;
   role: string;
   image: string;
+}
+
+export interface Bidang {
+  name: string;
+  coordinator?: string;
+  members: string[];
 }
 
 export interface Attraction {
@@ -98,7 +107,11 @@ export interface VisitDataResponse {
 }
 
 export interface ManagerDataResponse {
+  organizationName?: string;
+  description?: string;
+  legalBasis?: string;
   managers: Manager[];
+  bidangs?: Bidang[];
   partners: Partner[];
 }
 

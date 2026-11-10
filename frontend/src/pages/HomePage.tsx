@@ -190,20 +190,21 @@ export default function HomePage() {
             transition={{ duration: 0.5 }}
             className="mt-12 grid gap-4 md:grid-cols-3"
           >
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+            {[1, 2, 3, 4, 5].map((i) => (
               <div
                 key={i}
-                className={`flex items-center justify-center overflow-hidden rounded-2xl bg-gray-light ${
+                className={`overflow-hidden rounded-2xl bg-gray-light ${
                   i === 1 ? "md:col-span-2 md:row-span-2" : ""
                 }`}
               >
-                <div
-                  className={`flex w-full items-center justify-center text-gray ${
-                    i === 1 ? "aspect-square md:aspect-auto md:h-full" : "aspect-[4/3]"
+                <img
+                  src={`/assets/beranda/foto-wisata-${i}.jpg`}
+                  alt={`Foto wisata Desa Tritik ${i}`}
+                  loading="lazy"
+                  className={`h-full w-full object-cover ${
+                    i === 1 ? "aspect-square md:aspect-auto" : "aspect-[4/3]"
                   }`}
-                >
-                  <span className="text-sm">Foto {i}</span>
-                </div>
+                />
               </div>
             ))}
           </motion.div>

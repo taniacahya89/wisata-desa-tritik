@@ -44,10 +44,12 @@ export default function UmkmPage() {
             ))}
           </div>
         ) : (
-          <EmptyState
-            message="UMKM tidak ditemukan"
-            description="Informasi mengenai UMKM akan ditampilkan ketika data sudah tersedia."
-          />
+          <div className="mt-10">
+            <EmptyState
+              message="Data UMKM desa sedang disiapkan"
+              description="Silakan kembali lagi nanti."
+            />
+          </div>
         )}
       </div>
     </div>

@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { UserCircle, Mail, Phone } from "lucide-react";
 import SectionTitle from "../components/ui/SectionTitle";
 import Card from "../components/ui/Card";
 import Loading from "../components/ui/Loading";
-import { DUMMY_MANAGERS, DUMMY_PARTNERS } from "../data/dummy";
-import { CONTACT_INFO } from "../constants/siteInfo";
+import { DUMMY_MANAGERS, DUMMY_BIDANGS, DUMMY_PARTNERS } from "../data/dummy";
 import { getManagerData } from "../services/manager.service";
 import type { ManagerDataResponse } from "../types";
+
+// Helper function untuk membuat inisial dari nama
+function getInitials(name: string): string {
+  const words = name.split(" ");
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+}
 
 export default function ManagerPage() {
   const [data, setData] = useState<ManagerDataResponse | null>(null);
@@ -22,7 +29,13 @@ export default function ManagerPage() {
       .catch((err) => {
         console.warn("Manager API offline, using local data fallback:", err);
         setData({
+          organizationName: "Pokdarwis Tritik Purba",
+          description:
+            "Site Museum Tritik dikelola oleh Kelompok Sadar Wisata (Pokdarwis) Tritik Purba, mitra pemerintah desa dalam pengembangan wisata edukasi di kawasan Tritik.",
+          legalBasis:
+            "Keputusan Kepala Desa Tritik, Kecamatan Rejoso, Kabupaten Nganjuk Nomor 190/23/K/411.516.2023/2025 tentang Pembentukan Pokdarwis Tritik Purba, ditetapkan di Tritik pada 4 Desember 2025 oleh Kepala Desa Tritik (Hartoyo, SE), dengan masa kerja kepengurusan 3 tahun. Susunan pengurus disepakati melalui Musyawarah Desa pada Kamis, 4 Desember 2025 pukul 09.30 WIB di Balai Desa Tritik, dengan penyuluhan dari Dinas PORABUDPAR Kabupaten Nganjuk.",
           managers: DUMMY_MANAGERS,
+          bidangs: DUMMY_BIDANGS,
           partners: DUMMY_PARTNERS,
         });
         setLoading(false);
@@ -36,13 +49,23 @@ export default function ManagerPage() {
   return (
     <div className="pt-24 pb-20">
       <div className="mx-auto max-w-6xl px-6">
-        {/* ========== PROFIL ========== */}
+        {/* ========== HEADER ========== */}
         <SectionTitle
-          title="Pengelola"
-          subtitle="Tim pengelola Desa Wisata Tritik yang berkomitmen menjaga dan mengembangkan destinasi wisata ini."
+          title={data.organizationName || "Pengelola"}
+          subtitle={data.description || "Pengelola Desa Wisata Tritik"}
         />
 
-        {/* ========== STRUKTUR ORGANISASI ========== */}
+        {/* ========== DASAR HUKUM ========== */}
+        {data.legalBasis && (
+          <section className="mt-10">
+            <Card hover={false}>
+              <h3 className="mb-3 text-lg font-bold text-dark">Dasar Hukum</h3>
+              <p className="text-sm leading-relaxed text-gray">{data.legalBasis}</p>
+            </Card>
+          </section>
+        )}
+
+        {/* ========== PENGURUS INTI ========== */}
         <section className="mt-12">
           <motion.h3
             initial={{ opacity: 0, y: 10 }}
@@ -50,20 +73,20 @@ export default function ManagerPage() {
             viewport={{ once: true }}
             className="mb-6 text-center text-2xl font-bold text-dark"
           >
-            Struktur Organisasi
+            Pengurus Inti
           </motion.h3>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data.managers.map((manager, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
                 className="flex flex-col items-center rounded-2xl bg-white p-6 text-center shadow-sm"
               >
-                {/* Avatar placeholder */}
+                {/* Avatar dengan inisial */}
                 {manager.image ? (
                   <img
                     src={manager.image}
@@ -71,21 +94,74 @@ export default function ManagerPage() {
                     className="mb-4 h-20 w-20 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-cream">
-                    <UserCircle className="h-12 w-12 text-olive/40" />
+                  <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-olive text-white">
+                    <span className="text-xl font-bold">{getInitials(manager.name)}</span>
                   </div>
                 )}
 
-                <h4 className="text-base font-bold text-dark">
-                  {manager.name}
-                </h4>
-                <p className="mt-1 text-sm text-gray">{manager.role}</p>
+                <p className="text-sm font-medium text-olive">{manager.role}</p>
+                <h4 className="mt-1 text-base font-bold text-dark">{manager.name}</h4>
               </motion.div>
             ))}
           </div>
         </section>
 
+        {/* ========== BIDANG-BIDANG ========== */}
+        {data.bidangs && data.bidangs.length > 0 && (
+          <section className="mt-16">
+            <motion.h3
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="mb-6 text-center text-2xl font-bold text-dark"
+            >
+              Bidang-Bidang
+            </motion.h3>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {data.bidangs.map((bidang, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.05 }}
+                >
+                  <Card hover={false}>
+                    <h4 className="mb-3 text-lg font-bold text-dark">{bidang.name}</h4>
+
+                    {bidang.coordinator && (
+                      <div className="mb-3">
+                        <p className="text-xs font-medium uppercase tracking-wide text-olive">
+                          Koordinator
+                        </p>
+                        <p className="mt-1 text-sm text-dark">{bidang.coordinator}</p>
+                      </div>
+                    )}
+
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wide text-olive">
+                        Anggota
+                      </p>
+                      <ul className="mt-2 space-y-1">
+                        {bidang.members.map((member, idx) => (
+                          <li key={idx} className="text-sm text-gray">
+                            • {member}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* ========== MITRA ========== */}
+        {/* Section ini disembunyikan karena data mitra masih kosong */}
+        {/* Cara mengaktifkan: isi array DUMMY_PARTNERS di data/dummy.ts, lalu hapus komentar di bawah */}
+        {/* 
         {data.partners && data.partners.length > 0 && (
           <section className="mt-16">
             <h3 className="mb-6 text-center text-2xl font-bold text-dark">
@@ -116,8 +192,12 @@ export default function ManagerPage() {
             </div>
           </section>
         )}
+        */}
 
-        {/* ========== KONTAK ========== */}
+        {/* ========== KONTAK PENGELOLA ========== */}
+        {/* Section ini disembunyikan karena data kontak belum tersedia */}
+        {/* Cara mengaktifkan: isi CONTACT_INFO di constants/siteInfo.ts dengan data kontak pengelola, lalu hapus komentar di bawah */}
+        {/*
         <section className="mt-16">
           <motion.h3
             initial={{ opacity: 0, y: 10 }}
@@ -153,6 +233,7 @@ export default function ManagerPage() {
             </Card>
           </div>
         </section>
+        */}
       </div>
     </div>
   );
